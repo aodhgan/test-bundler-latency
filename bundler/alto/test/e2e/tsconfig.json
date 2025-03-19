@@ -1,0 +1,27 @@
+{
+    "compilerOptions": {
+        "module": "NodeNext",
+        "target": "ESNext",
+        "sourceMap": true,
+        "outDir": "./build",
+        "rootDir": "./",
+        //"moduleResolution": "node",
+        "esModuleInterop": true,
+        "strict": true,
+        "strictNullChecks": true,
+        "resolveJsonModule": true,
+        "noImplicitAny": false,
+        "skipLibCheck": true,
+        // "types": [
+        //     "bun-types"
+        // ]
+    },
+    "noErrorTruncation": true,
+    "exclude": [
+        "node_modules",
+    ],
+    //"files": ["./hardhat.config.ts"],
+    "ts-node": {
+        "swc": true
+    }
+}

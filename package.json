@@ -1,0 +1,15 @@
+{
+  "name": "test-bundler-latency",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "permissionless": "^0.2.37",
+    "viem": "^2.23.12"
+  }
+}
