@@ -627,7 +627,10 @@ export class Executor {
         entryPoint: Address,
         ops: UserOperation[]
     ): Promise<BundleResult[]> {
+        console.time("bundleAll")
+        console.time("bundle:getWallet")
         const wallet = await this.senderManager.getWallet()
+        console.timeEnd("bundle:getWallet")
 
         const opsWithHashes = ops.map((op) => {
             return {
@@ -673,6 +676,7 @@ export class Executor {
         // These calls can throw, so we try/catch them to mark wallet as processed in event of error.
         let nonce: number
         let gasPriceParameters: GasPriceParameters
+        console.time("bundle:getNetworkGasPrice&transactionCount")
         try {
             ;[gasPriceParameters, nonce] = await Promise.all([
                 this.gasPriceManager.tryGetNetworkGasPrice(),
@@ -699,7 +703,9 @@ export class Executor {
                 }
             })
         }
+        console.timeEnd("bundle:getNetworkGasPrice&transactionCount")
 
+        console.time("bundle:filterOpsAndEstimateGas")
         let { gasLimit, simulatedOps } = await filterOpsAndEstimateGas(
             entryPoint,
             ep,
@@ -719,6 +725,7 @@ export class Executor {
                 )
             )
         )
+        console.timeEnd("bundle:filterOpsAndEstimateGas")
 
         if (simulatedOps.length === 0) {
             childLogger.error(
@@ -854,6 +861,7 @@ export class Executor {
                 }
             ) as PackedUserOperation[]
 
+            console.time("bundle:sendHandleOpsTransaction")
             transactionHash = await this.sendHandleOpsTransaction({
                 txParam: {
                     ops: userOps,
@@ -862,6 +870,7 @@ export class Executor {
                 },
                 opts
             })
+            console.timeEnd("bundle:sendHandleOpsTransaction")
 
             opsWithHashToBundle.map(({ userOperationHash }) => {
                 this.eventManager.emitSubmitted(
@@ -958,7 +967,7 @@ export class Executor {
             },
             "submitted bundle transaction"
         )
-
+        console.timeEnd("bundleAll")
         return userOperationResults
     }
 }

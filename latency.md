@@ -44,37 +44,6 @@ parseUserOperationReceipt: 1.313ms
 sendUserOpTotal: 2.012s
 
 ## Http vs websockset
-Measuring WebSocket RPC latency...
-✅ WebSocket RPC Latency: 141.66 ms
-Transaction Receipt (WebSocket): {
-  jsonrpc: '2.0',
-  id: 1,
-  result: {
-    blockHash: '0x82563fd211e075f8fe6997cc39d73bdc89510177c79bac141050870b5aecbd87',
-    blockNumber: '0x4c54f',
-    contractAddress: null,
-    cumulativeGasUsed: '0x2fa19',
-    effectiveGasPrice: '0xf433c',
-    from: '0xa45a98bf696e48d3d57b11352a41e691f2b0f24e',
-    gasUsed: '0x24efb',
-    l1BaseFeeScalar: '0xa31c2',
-    l1BlobBaseFee: '0x1',
-    l1BlobBaseFeeScalar: '0x0',
-    l1Fee: '0x25bf47cf4',
-    l1GasPrice: '0x280454',
-    l1GasUsed: '0x1697',
-    logs: [ [Object], [Object], [Object] ],
-    logsBloom: '0x00000000000000000000080000000000000000000000000000000100000000000008000000000000000000010000000000000000000000000000060000000000000000000000000000000008000000000040000000000000000000000800000000000000020800000000000000000800000000000000000000000010000000000000020000000000000000000000000100000000000000000000000000000000000100000000000000400000002200000000000000000000000002200000000000000002000000400001000000000000000000000000000000000000800020000000000010000000040000080000000000000000000000000000000000000001',
-    status: '0x1',
-    to: '0x0000000071727de22e5e9d8baf0edac6f37da032',
-    transactionHash: '0xc0c9e87762f8389e9953f6aaca1fdee005515d03b44372d8ba7d6e07022c80e8',
-    transactionIndex: '0x1',
-    type: '0x2'
-  }
-}
-🔌 WebSocket connection closed.
-aodhgan@aodhgans-MBP test-bundler-latency % tsx latency.ts
-
 📡 Measuring HTTP RPC latency...
 🔹 HTTP Request 1: 190.04 ms
 🔹 HTTP Request 2: 77.24 ms
@@ -102,3 +71,30 @@ aodhgan@aodhgans-MBP test-bundler-latency % tsx latency.ts
 🔹 WebSocket Request 10: 22.16 ms
 🔌 WebSocket Connection Closed.
 📊 WebSocket Latency Summary: Avg: 44.06 ms, Min: 22.16 ms, Max: 107.65 ms
+
+## local bundler pointing at testnet rpc
+ensureEntryPointIsSupported,0.0061
+getUserOperationHash,0.1329
+preMempoolChecks,0.029800000000000004
+    bundle:getWallet,0.0354
+    bundle:getNetworkGasPrice&transactionCount,81.533
+    bundle:filterOpsAndEstimateGas,119.12339999999999
+    bundle:sendHandleOpsTransaction,75.5855
+    bundleAll,276.7866
+bundle,276.8272
+markWalletProcessed,0.0548
+waitForTransactionReceipt,1469.8269
+parseUserOperationReceipt,1.4315
+sendUserOpTotal,1748.6
+
+
+
+## Hetzner bunlder pointing at testnet rpc
+ensureEntryPointIsSupported,0.011333333333333336
+getUserOperationHash,0.9337333333333333
+preMempoolChecks,0.14313333333333336
+bundle,1.5295333333333336
+markWalletProcessed,0.14726666666666668
+waitForTransactionReceipt,2019.3468666666668
+parseUserOperationReceipt,7.835999999999999
+sendUserOpTotal,3559.5333333333333

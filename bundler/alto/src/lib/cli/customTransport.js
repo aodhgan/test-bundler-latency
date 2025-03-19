@@ -29,7 +29,6 @@ url_, config) {
         const retryCount = config.retryCount ?? retryCount_;
         const timeout = timeout_ ?? config.timeout ?? 10_000;
         const url = url_ || chain?.rpcUrls.default.http[0];
-        console.log("url", url);
         if (!url) {
             throw new viem_1.UrlRequiredError();
         }

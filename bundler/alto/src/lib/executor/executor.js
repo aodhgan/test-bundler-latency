@@ -369,7 +369,10 @@ class Executor {
         }
     }
     async bundle(entryPoint, ops) {
+        console.time("bundleAll");
+        console.time("bundle:getWallet");
         const wallet = await this.senderManager.getWallet();
+        console.timeEnd("bundle:getWallet");
         const opsWithHashes = ops.map((op) => {
             return {
                 mempoolUserOperation: op,
@@ -399,6 +402,7 @@ class Executor {
         // These calls can throw, so we try/catch them to mark wallet as processed in event of error.
         let nonce;
         let gasPriceParameters;
+        console.time("bundle:getNetworkGasPrice&transactionCount");
         try {
             ;
             [gasPriceParameters, nonce] = await Promise.all([
@@ -424,7 +428,10 @@ class Executor {
                 };
             });
         }
+        console.timeEnd("bundle:getNetworkGasPrice&transactionCount");
+        console.time("bundle:filterOpsAndEstimateGas");
         let { gasLimit, simulatedOps } = await (0, utils_2.filterOpsAndEstimateGas)(entryPoint, ep, wallet, opsWithHashes, nonce, gasPriceParameters.maxFeePerGas, gasPriceParameters.maxPriorityFeePerGas, this.config.blockTagSupport ? "pending" : undefined, this.config.legacyTransactions, this.config.fixedGasLimitForEstimation, this.reputationManager, childLogger, (0, utils_2.getAuthorizationList)(opsWithHashes.map(({ mempoolUserOperation }) => mempoolUserOperation)));
+        console.timeEnd("bundle:filterOpsAndEstimateGas");
         if (simulatedOps.length === 0) {
             childLogger.error("gas limit simulation encountered unexpected failure");
             this.markWalletProcessed(wallet);
@@ -529,6 +536,7 @@ class Executor {
                 }
                 return (0, utils_1.toPackedUserOperation)(op);
             });
+            console.time("bundle:sendHandleOpsTransaction");
             transactionHash = await this.sendHandleOpsTransaction({
                 txParam: {
                     ops: userOps,
@@ -537,6 +545,7 @@ class Executor {
                 },
                 opts
             });
+            console.timeEnd("bundle:sendHandleOpsTransaction");
             opsWithHashToBundle.map(({ userOperationHash }) => {
                 this.eventManager.emitSubmitted(userOperationHash, transactionHash);
             });
@@ -611,6 +620,7 @@ class Executor {
             txHash: transactionHash,
             opHashes: opsWithHashToBundle.map((owh) => owh.userOperationHash)
         }, "submitted bundle transaction");
+        console.timeEnd("bundleAll");
         return userOperationResults;
     }
 }
