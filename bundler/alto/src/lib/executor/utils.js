@@ -77,7 +77,7 @@ function simulatedOpsToResults(simulatedOps, transactionInfo) {
 }
 exports.simulatedOpsToResults = simulatedOpsToResults;
 async function filterOpsAndEstimateGas(entryPoint, ep, wallet, ops, nonce, maxFeePerGas, maxPriorityFeePerGas, blockTag, onlyPre1559, fixedGasLimitForEstimation, reputationManager, logger, authorizationList) {
-    console.time("filterOpsAndEstimateGasAll");
+    // console.time("filterOpsAndEstimateGas:All")
     const simulatedOps = ops.map((owh) => {
         return { owh, reason: undefined };
     });
@@ -224,7 +224,7 @@ async function filterOpsAndEstimateGas(entryPoint, ep, wallet, ops, nonce, maxFe
             }
         }
     }
-    console.timeEnd("filterOpsAndEstimateGasAll");
+    // console.timeEnd("filterOpsAndEstimateGas:All")
     return { simulatedOps, gasLimit: 0n };
 }
 exports.filterOpsAndEstimateGas = filterOpsAndEstimateGas;

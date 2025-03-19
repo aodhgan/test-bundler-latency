@@ -122,7 +122,7 @@ export async function filterOpsAndEstimateGas(
     logger: Logger,
     authorizationList?: SignedAuthorizationList
 ) {
-    console.time("filterOpsAndEstimateGasAll")
+    // console.time("filterOpsAndEstimateGas:All")
     const simulatedOps: {
         owh: UserOperationWithHash
         reason: string | undefined
@@ -345,7 +345,7 @@ export async function filterOpsAndEstimateGas(
             }
         }
     }
-    console.timeEnd("filterOpsAndEstimateGasAll")
+    // console.timeEnd("filterOpsAndEstimateGas:All")
     return { simulatedOps, gasLimit: 0n }
 }
 
