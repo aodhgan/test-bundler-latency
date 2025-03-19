@@ -122,6 +122,7 @@ export async function filterOpsAndEstimateGas(
     logger: Logger,
     authorizationList?: SignedAuthorizationList
 ) {
+    console.time("filterOpsAndEstimateGasAll")
     const simulatedOps: {
         owh: UserOperationWithHash
         reason: string | undefined
@@ -152,7 +153,7 @@ export async function filterOpsAndEstimateGas(
                         ? op
                         : toPackedUserOperation(op as UserOperationV07)
                 })
-
+            console.time("filterOspAndEstimateGas:estimateGas")
             gasLimit = await ep.estimateGas.handleOps(
                 // @ts-ignore - ep is set correctly for opsToSend, but typescript doesn't know that
                 [opsToSend, wallet.address],
@@ -169,7 +170,7 @@ export async function filterOpsAndEstimateGas(
                     ...gasOptions
                 }
             )
-
+            console.timeEnd("filterOspAndEstimateGas:estimateGas")
             return { simulatedOps, gasLimit }
         } catch (err: unknown) {
             logger.error({ err, blockTag }, "error estimating gas")
@@ -344,6 +345,7 @@ export async function filterOpsAndEstimateGas(
             }
         }
     }
+    console.timeEnd("filterOpsAndEstimateGasAll")
     return { simulatedOps, gasLimit: 0n }
 }
 

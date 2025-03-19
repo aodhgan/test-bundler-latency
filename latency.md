@@ -90,11 +90,16 @@ sendUserOpTotal,1748.6
 
 
 ## Hetzner bunlder pointing at testnet rpc
-ensureEntryPointIsSupported,0.011333333333333336
-getUserOperationHash,0.9337333333333333
-preMempoolChecks,0.14313333333333336
-bundle,1.5295333333333336
-markWalletProcessed,0.14726666666666668
-waitForTransactionReceipt,2019.3468666666668
-parseUserOperationReceipt,7.835999999999999
-sendUserOpTotal,3559.5333333333333
+ensureEntryPointIsSupported,0.0329
+getUserOperationHash,1.1074
+preMempoolChecks,0.24199999999999994
+    bundle:getWallet,0.20929999999999999
+    bundle:getNetworkGasPrice&transactionCount,439.0156
+    bundle:filterOpsAndEstimateGas,636.9049
+    bundle:sendHandleOpsTransaction,466.77020000000005
+    bundleAll,1545.7
+bundle,1546.0
+markWalletProcessed,0.227
+waitForTransactionReceipt,1285.7912000000001
+parseUserOperationReceipt,8.9485
+sendUserOpTotal,2844.1

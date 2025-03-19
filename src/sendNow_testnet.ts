@@ -17,7 +17,7 @@ import { type PimlicoClient, createPimlicoClient } from "permissionless/clients/
 import { entryPoint07Address } from "viem/account-abstraction"
 import { createMintCall } from "./utils/createMintCall"
 
-const bundlerRpc ="http://localhost:3000" //"http://65.109.162.43:3000"  //"http://localhost:3000"//"https://bundler-staging.happy.tech"
+const bundlerRpc ="http://65.109.162.43:3000"  //"http://localhost:3000"//"https://bundler-staging.happy.tech"
 const PAYMASTER_VERIFICATION_GAS_LIMIT_WITH_FACTORY = 45000n
 const PAYMASTER_POST_OP_GAS_LIMIT = 1n // Set to 1 since the postOp function is never called
 const PAYMASTER_DATA = "0x" as const

@@ -478,6 +478,7 @@ export class Executor {
                   nonce: number
               }
     }) {
+        console.time("sendHandleOpsTransactionAll")
         let data: Hex
         let to: Address
 
@@ -488,13 +489,14 @@ export class Executor {
             args: [ops, opts.account.address]
         })
         to = entryPoint
-
+        console.time("sendHandleOpsTransaction:prepareTransactionRequest")
         const request =
             await this.config.walletClient.prepareTransactionRequest({
                 to,
                 data,
                 ...opts
             })
+        console.timeEnd("sendHandleOpsTransaction:prepareTransactionRequest")
 
         request.gas = scaleBigIntByPercent(
             request.gas,
@@ -543,6 +545,7 @@ export class Executor {
                         cause instanceof NonceTooLowError ||
                         cause instanceof NonceTooHighError
                     ) {
+                        console.log("Nonce too low, retrying")
                         this.logger.warn("Nonce too low, retrying")
                         request.nonce =
                             await this.config.publicClient.getTransactionCount({
@@ -561,6 +564,7 @@ export class Executor {
                     // This is thrown by OP-Stack chains that use proxyd.
                     // ref: https://github.com/ethereum-optimism/optimism/issues/2618#issuecomment-1630272888
                     if (cause.details?.includes("no backends available")) {
+                        console.log("no backends avaiable error, retrying after 500ms")
                         this.logger.warn(
                             "no backends avaiable error, retrying after 500ms"
                         )
@@ -574,6 +578,7 @@ export class Executor {
                 }
 
                 attempts++
+                console.log("retrying transaction")
             }
         }
 
@@ -588,7 +593,7 @@ export class Executor {
         if (!transactionHash) {
             throw new Error("Transaction hash not assigned")
         }
-
+        console.timeEnd("sendHandleOpsTransactionAll")
         return transactionHash as Hex
     }
 
