@@ -440,6 +440,7 @@ class Executor {
         let { gasLimit, simulatedOps } = await (0, utils_2.filterOpsAndEstimateGas)(entryPoint, ep, wallet, opsWithHashes, nonce, gasPriceParameters.maxFeePerGas, gasPriceParameters.maxPriorityFeePerGas, this.config.blockTagSupport ? "pending" : undefined, this.config.legacyTransactions, this.config.fixedGasLimitForEstimation, this.reputationManager, childLogger, (0, utils_2.getAuthorizationList)(opsWithHashes.map(({ mempoolUserOperation }) => mempoolUserOperation)));
         console.timeEnd("bundle:filterOpsAndEstimateGas");
         if (simulatedOps.length === 0) {
+            console.log("gas limit sim failed..");
             childLogger.error("gas limit simulation encountered unexpected failure");
             this.markWalletProcessed(wallet);
             return opsWithHashes.map(({ userOperationHash, mempoolUserOperation }) => {
@@ -455,6 +456,7 @@ class Executor {
             });
         }
         if (simulatedOps.every((op) => op.reason !== undefined)) {
+            console.log("all ops failed simulation");
             childLogger.warn("all ops failed simulation");
             this.markWalletProcessed(wallet);
             return simulatedOps.map(({ reason, owh }) => {

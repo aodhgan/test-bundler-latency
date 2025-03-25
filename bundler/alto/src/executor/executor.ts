@@ -733,6 +733,7 @@ export class Executor {
         console.timeEnd("bundle:filterOpsAndEstimateGas")
 
         if (simulatedOps.length === 0) {
+            console.log("gas limit sim failed..")
             childLogger.error(
                 "gas limit simulation encountered unexpected failure"
             )
@@ -753,6 +754,7 @@ export class Executor {
         }
 
         if (simulatedOps.every((op) => op.reason !== undefined)) {
+            console.log("all ops failed simulation")
             childLogger.warn("all ops failed simulation")
             this.markWalletProcessed(wallet)
             return simulatedOps.map(({ reason, owh }) => {
